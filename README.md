@@ -9,7 +9,7 @@ A belsős chatbot célja az adminisztratív és ügykezelési feladatok és a hi
 ### A bot működése (Munkafolyamatok és Csomópontok)
 
 1. **Geocode / Standard hívás (Háttérfolyamat)**
-   Már a belépési ponton (Entry) lefut egy folyamat (`Batch Geocoding for Hungari...` kártya), ami automatikusan kiegészíti az adatbázis hiányos koordinátáit. Amennyiben az adatbázisban (`jarokelo_extractTable`) szereplő ügyekhez tartozó `lat` (szélesség) és `lng` (hosszúság) oszlopok üresek, a bot végigfut ezeken a sorokon, és a Nominatim API segítségével frissíti a koordinátákat.
+   Már a belépési ponton (Entry) lefut egy folyamat (`Batch Geocoding for Hungari...` kártya), ami automatikusan kiegészíti az adatbázis hiányos koordinátáit. Amennyiben az adatbázisban (`jarokelo_extractTable`) szereplő ügyekhez tartozó `lat` (szélesség) és `lng` (hosszúság) oszlopok üresek, a bot végigfut ezeken a sorokon, és a **LocationIQ API** segítségével frissíti a koordinátákat. Kereséskor a rendszer először egy pontosított, strukturált lekérdezést használ, majd ha az nem hoz eredményt, automatikusan visszavált egy általános (free-form) keresési módra.
 
 2. **Ügy_bekérése node**
    A főfolyamat első lépéseként a bot bekér egy hivatkozást az ügyintézőtől (*"Kérlek adj meg egy ügyet, amivel s..."*), ez lesz a feldolgozni kívánt URL. Ezt a bot az `incoming_issue` változóba menti el.
