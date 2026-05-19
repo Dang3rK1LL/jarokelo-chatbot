@@ -3,86 +3,52 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Járókelő Külsős Chatbot</title>
-
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <!-- ========================= -->
-    <!-- TOP NAVIGATION -->
-    <!-- ========================= -->
-
     <nav class="topbar">
-
         <div class="nav-tabs">
-
-            <a href="index.html"
-               class="nav-tab active external">
+            <a href="index.html" class="nav-tab active external">
                 Külső chatbot
             </a>
 
-            <a href="belso.html"
-               class="nav-tab">
+            <a href="belso.html" class="nav-tab">
                 Belső chatbot
             </a>
-
         </div>
-
     </nav>
-
-    <!-- ========================= -->
-    <!-- MAIN CONTENT -->
-    <!-- ========================= -->
 
     <main class="page">
 
-        <!-- SHORT DESCRIPTION -->
-
         <section class="hero-text">
-
             <div class="badge external">
                 Külsős felület
             </div>
 
-            <h1>
-                Járókelő Bejelentő Asszisztens
-            </h1>
+            <h1>Járókelő Bejelentő Asszisztens</h1>
 
             <p>
                 Közterületi hibabejelentés gyorsan és egyszerűen chatbot segítségével.
             </p>
-
         </section>
 
-        <!-- FULL HEIGHT CHAT -->
-
         <section class="chat-section">
-
             <div class="chat-wrapper">
-
                 <div id="webchat"></div>
-
             </div>
-
         </section>
 
     </main>
 
-    <!-- ========================= -->
-    <!-- BOTPRESS -->
-    <!-- ========================= -->
-
+    <!-- Botpress Embedded Webchat -->
     <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
 
-    <script>
-        window.botpress.init({
-            botId: "8ace8ec2-5110-4798-a82a-eed6cdd182c6",
-            clientId: "20260320160658-S8A1OH57",
-            selector: "#webchat"
-        });
+    <script
+        src="https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js"
+        defer>
     </script>
 
 </body>
