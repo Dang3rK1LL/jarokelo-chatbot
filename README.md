@@ -6,28 +6,30 @@ Ez a projekt a Járókelő hibabejelentő platform két chatbotos felületét ta
 
 A belsős chatbot célja az adminisztratív és ügykezelési feladatok és a hibabejelentések háttérmunkájának megkönnyítése mesterséges intelligencia segítségével.
 
-### A bot működése
+### A bot működése (Munkafolyamatok és Csomópontok)
 
-1. **Geocode Node (Adatbázis koordinátáinak kiegészítése)**
-   Amennyiben az adatbázisban (`jarokelo_extractTable`) szereplő ügyekhez tartozó `lat` (szélesség) és `lng` (hosszúság) oszlopok üresek, a bot végigfut ezeken a sorokon. A Nominatim API segítségével megpróbálja utólag geokódolni és frissíteni a rögzített esetek földrajzi koordinátáit.
+1. **Geocode / Standard hívás (Háttérfolyamat)**
+   Már a belépési ponton (Entry) lefut egy folyamat (`Batch Geocoding for Hungari...` kártya), ami automatikusan kiegészíti az adatbázis hiányos koordinátáit. Amennyiben az adatbázisban (`jarokelo_extractTable`) szereplő ügyekhez tartozó `lat` (szélesség) és `lng` (hosszúság) oszlopok üresek, a bot végigfut ezeken a sorokon, és a Nominatim API segítségével frissíti a koordinátákat.
 
-2. **Ügy bekérése**
-   A bot bekér egy URL-t a felhasználótól (az ügyintézőtől), amely a feldolgozni kívánt ügyre mutat.
+2. **Ügy_bekérése node**
+   A főfolyamat első lépéseként a bot bekér egy hivatkozást az ügyintézőtől (*"Kérlek adj meg egy ügyet, amivel s..."*), ez lesz a feldolgozni kívánt URL. Ezt a bot az `incoming_issue` változóba menti el.
 
-3. **Adatkinyerés**
-   A megadott URL alapján a bot feldolgozza az esetet, és kinyeri a szükséges információkat:
+3. **Adatkinyerés node**
+   A bot egy `Execute code` kártya segítségével feldolgozza az `incoming_issue` változóban kapott url-t, és kinyeri belőle az ügy érdemi részleteit:
    - Város
    - Kerület
    - Cím
    - Kategória
-   - Egy rövid összegzés az ügy leírásából.
+   - Ügy leírásának összegzése (summary).
+   Az adatokat a rendszer az `extracted_data` (kinyert adatok) változóba gyűjti össze.
 
-4. **Tudásbázis kinyerés és szűrés**
-   A rendszer az adatbázist leszűri azokra az esetekre, amelyek **ugyanabban a kerületben** találhatóak és **ugyanabba a kategóriába** tartoznak, mint a vizsgált ügy.
-   Ennek alapján a mesterséges intelligencia megteszi a predikcióját, amelyben meghatározza, hogy az adott ügy **kihez tartozhat, ki a felelős és kinek kellene bejelenteni**.
+4. **Tudásbázis_kinyerés_és_döntés node**
+   A `Filter and Limit Database Res...` kód alapján a rendszer leszűri az adatbázist azokra az esetekre, amelyek **ugyanabban a kerületben** találhatóak és **ugyanabba a kategóriába** tartoznak, mint ami az `extracted_data` változóban van.
+   A leszűrt esetekből az AI predikciót hajt végre, amely meghatározza az illetékes hatóságot, az ügy felelősét.
+   Ennek kimenetét (indoklással) a `final_decision` változó tárolja és mutatja be (`{{workflow.final_decision.reasonin...}}` formájában).
 
-5. **Lokáció vizsgálat (Térbeli közelség)**
-   A korábban geokódolt adatok (pontos koordináták) alapján a bot megkeresi az 5 legközelebbi korábbi ügyet. Extra szűrésként a bot végül csak azokat az ügyeket adja vissza és jeleníti meg, amelyek a vizsgált ügytől **ténylegesen 50 méteren belül** helyezkednek el.
+5. **Lokáció_vizsgálat node**
+   Végül a `Geocoding and Nearby Case...` szkript megvizsgálja a geokódolt esetek távolságát az aktuális ügyhöz képest. A bot kikeresi az 5 legközelebbi egyezést, amelyből szűrve csak a **ténylegesen 50 méteren belüli** ügyeket listázza ki. A megfelelő találatok leírását a `{{workflow.kozeli_ugyek_text}}` változón keresztül írja ki a képernyőre, majd a folyamat lezárul (End - Go to next workflow).
 
 ## Külső chatbot (Járókelő Bejelentő Asszisztens)
 
