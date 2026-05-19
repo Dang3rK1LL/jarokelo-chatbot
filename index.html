@@ -11,11 +11,11 @@
 
     <nav class="topbar">
         <div class="nav-tabs">
-            <a href="index.html" class="nav-tab active external">
+            <a href="#" id="btn-external" onclick="switchBot('external', event)" class="nav-tab active external">
                 Külső chatbot
             </a>
 
-            <a href="belso.html" class="nav-tab">
+            <a href="#" id="btn-internal" onclick="switchBot('internal', event)" class="nav-tab">
                 Belső chatbot
             </a>
         </div>
@@ -26,9 +26,9 @@
         <section class="hero-text">
             
 
-            <h1>Járókelő Bejelentő Asszisztens</h1>
+            <h1 id="title">Járókelő Bejelentő Asszisztens</h1>
 
-            <p>
+            <p id="desc">
                 Közterületi hibabejelentés gyorsan és egyszerűen chatbot segítségével.
             </p>
         </section>
@@ -42,11 +42,62 @@
     </main>
 
     <!-- Botpress Embedded Webchat -->
-    <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+    <script>
+        const bots = {
+            external: {
+                title: "Járókelő Bejelentő Asszisztens",
+                desc: "Közterületi hibabejelentés gyorsan és egyszerűen chatbot segítségével.",
+                script: "https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js"
+            },
+            internal: {
+                title: "Járókelő Adminisztrációs Asszisztens",
+                desc: "A chatbot segítségével adminisztratív és ügykezelési feladatokat lehet tesztelni.",
+                script: "https://files.bpcontent.cloud/2026/04/22/08/20260422081809-5FRAVNNY.js"
+            }
+        };
 
-    <script
-        src="https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js"
-        defer>
+        function switchBot(type, e) {
+            if (e) e.preventDefault();
+
+            // Update UI
+            document.getElementById('btn-external').classList.toggle('active', type === 'external');
+            
+            const btnInternal = document.getElementById('btn-internal');
+            btnInternal.classList.toggle('active', type === 'internal');
+            btnInternal.classList.toggle('internal', type === 'internal');
+            
+            document.getElementById('title').innerText = bots[type].title;
+            document.getElementById('desc').innerText = bots[type].desc;
+
+            // Reset Chatbot DOM
+            const wrapper = document.querySelector('.chat-section');
+            wrapper.innerHTML = '<div class="chat-wrapper"><div id="webchat"></div></div>';
+            
+            // Remove old Botpress scripts
+            document.querySelectorAll('script[src*="bpcontent"], script[src*="botpress"]').forEach(s => s.remove());
+            
+            // Clean up global state if necessary
+            if (window.botpressWebChat) {
+                // Try to gracefully clear global instance if it exists
+                window.botpressWebChat = undefined;
+            }
+
+            // Re-inject core and config
+            const injectScript = document.createElement('script');
+            injectScript.src = "https://cdn.botpress.cloud/webchat/v3.6/inject.js";
+            injectScript.onload = () => {
+                const configScript = document.createElement('script');
+                configScript.src = bots[type].script;
+                configScript.defer = true;
+                document.body.appendChild(configScript);
+            };
+            document.body.appendChild(injectScript);
+        }
+
+        // Initialize default
+        document.addEventListener('DOMContentLoaded', () => {
+            switchBot('external');
+        });
     </script>
 
 </body>
