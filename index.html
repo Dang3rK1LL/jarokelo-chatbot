@@ -3,54 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Járókelő Belsős Chatbot MVP</title>
+    <title>Járókelő Külsős Chatbot</title>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            color: #333;
-        }
-
-        .container {
-            text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            color: #e67e22;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>Járókelő Adminisztrációs Asszisztens</h1>
-        <p>Üdvözöljük a külsős ügyintézői felületen!</p>
-        <p>A chatbot teszteléséhez kattintson a jobb alsó sarokban megjelenő ikonra.</p>
-    </div>
+    <nav class="topbar">
+        <div class="logo">Járókelő</div>
 
-    <!-- Botpress Webchat -->
-    
-   
-   
+        <div class="nav-links">
+            <a href="belsos.html" class="switch-btn">
+                Belsős felület
+            </a>
+        </div>
+    </nav>
+
+    <main class="hero">
+
+        <div class="glass-card">
+
+            <div class="badge">
+                Külsős felület
+            </div>
+
+            <h1>
+                Járókelő Bejelentő Asszisztens
+            </h1>
+
+            <p>
+                Üdvözlünk a Járókelő külsős chatbot felületén.
+            </p>
+
+            <p>
+                A jobb alsó sarokban található chat ikonnal
+                egyszerűen küldhetsz közterületi hibabejelentést.
+            </p>
+
+        </div>
+
+    </main>
+
+    <!-- Botpress -->
     <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js" defer></script>
-    
-    
-    
-  
 
+    <script
+        src="https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js"
+        defer>
+    </script>
 
 </body>
 </html>
