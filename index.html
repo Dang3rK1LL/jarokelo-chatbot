@@ -4,60 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Járókelő Külsős Chatbot</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <nav class="topbar">
-        <div class="logo">Járókelő</div>
+        <div class="nav-tabs">
+            <a href="index.html" class="nav-tab active external">
+                Külső chatbot
+            </a>
 
-       
-    <div class="nav-tabs">
-        <a href="index.html" class="nav-tab active external">
-            Külső chatbot
-        </a>
-
-        <a href="belso.html" class="nav-tab">
-            Belső chatbot
-        </a>
-    </div>
-</nav>
+            <a href="belso.html" class="nav-tab">
+                Belső chatbot
+            </a>
+        </div>
     </nav>
 
-    <main class="hero">
+    <main class="layout">
 
-        <div class="glass-card">
+        <section class="left-panel">
+            <div class="glass-card">
+                <div class="badge external">
+                    Külsős felület
+                </div>
 
-            <div class="badge">
-                Külsős felület
+                <h1>
+                    Járókelő Bejelentő Asszisztens
+                </h1>
+
+                <p>
+                    Üdvözlünk a Járókelő külsős chatbot felületén.
+                </p>
+
+                <p>
+                    A chatbot segítségével gyorsan és egyszerűen
+                    küldhetsz közterületi hibabejelentést.
+                </p>
             </div>
+        </section>
 
-            <h1>
-                Járókelő Bejelentő Asszisztens
-            </h1>
-
-            <p>
-                Üdvözlünk a Járókelő külsős chatbot felületén.
-            </p>
-
-            <p>
-                A jobb alsó sarokban található chat ikonnal
-                egyszerűen küldhetsz közterületi hibabejelentést.
-            </p>
-
-        </div>
+        <section class="chat-panel">
+            <div class="chat-wrapper">
+                <div id="webchat"></div>
+            </div>
+        </section>
 
     </main>
 
-    <!-- Botpress -->
-    
-   
+    <!-- Botpress Embedded Webchat -->
     <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js" defer></script>
-    
-    
+
+    <script>
+        window.botpress.init({
+            botId: "8ace8ec2-5110-4798-a82a-eed6cdd182c6",
+            clientId: "20260320160658-S8A1OH57",
+            selector: "#webchat"
+        });
+    </script>
 
 </body>
 </html>
