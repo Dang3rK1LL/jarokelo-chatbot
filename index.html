@@ -47,12 +47,36 @@
             external: {
                 title: "Járókelő Bejelentő Asszisztens",
                 desc: "Közterületi hibabejelentés gyorsan és egyszerűen chatbot segítségével.",
-                script: "https://files.bpcontent.cloud/2026/03/20/16/20260320160658-S8A1OH57.js"
+                config: {
+                    "botId": "8ace8ec2-5110-4798-a82a-eed6cdd182c6",
+                    "clientId": "4fe7d893-11f5-4d09-acec-2ee8bafb391d",
+                    "configuration": {
+                        "version": "v2",
+                        "color": "#3276EA",
+                        "embeddedChatId": "webchat",
+                        "variant": "solid",
+                        "themeMode": "light",
+                        "allowFileUpload": true,
+                        "conversationHistory": false
+                    }
+                }
             },
             internal: {
                 title: "Járókelő Adminisztrációs Asszisztens",
                 desc: "A chatbot segítségével adminisztratív és ügykezelési feladatokat lehet tesztelni.",
-                script: "https://files.bpcontent.cloud/2026/04/22/08/20260422081809-5FRAVNNY.js"
+                config: {
+                    "botId": "f454ea98-8703-4299-a890-1a9425955a82",
+                    "clientId": "7d9ed7b3-5ed6-4778-a6a9-b7e8b1e6d63c",
+                    "configuration": {
+                        "version": "v2",
+                        "color": "#3276EA",
+                        "embeddedChatId": "webchat", /* Ezzel kényszerítjük be a dobozba! */
+                        "variant": "solid",
+                        "themeMode": "light",
+                        "allowFileUpload": true,
+                        "conversationHistory": false
+                    }
+                }
             }
         };
 
@@ -73,23 +97,19 @@
             const wrapper = document.querySelector('.chat-section');
             wrapper.innerHTML = '<div class="chat-wrapper"><div id="webchat"></div></div>';
             
-            // Remove old Botpress scripts
-            document.querySelectorAll('script[src*="bpcontent"], script[src*="botpress"]').forEach(s => s.remove());
-            
-            // Clean up global state if necessary
-            if (window.botpressWebChat) {
-                // Try to gracefully clear global instance if it exists
-                window.botpressWebChat = undefined;
-            }
+            // Remove old Botpress scripts & clean globals
+            document.querySelectorAll('script[src*="botpress"]').forEach(s => s.remove());
+            const rootEl = document.getElementById('bp-webchat-container');
+            if (rootEl) rootEl.remove();
+
+            if (window.botpressWebChat) window.botpressWebChat = undefined;
+            if (window.botpress) window.botpress = undefined;
 
             // Re-inject core and config
             const injectScript = document.createElement('script');
             injectScript.src = "https://cdn.botpress.cloud/webchat/v3.6/inject.js";
             injectScript.onload = () => {
-                const configScript = document.createElement('script');
-                configScript.src = bots[type].script;
-                configScript.defer = true;
-                document.body.appendChild(configScript);
+                window.botpress.init(bots[type].config);
             };
             document.body.appendChild(injectScript);
         }
